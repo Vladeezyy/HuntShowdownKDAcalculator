@@ -84,11 +84,10 @@
 
             while (true) {
                 const testKDA = (kills + killsAssistsNeeded + assists) / deaths;
-                if (testKDA >= targetKDA) {
+                if (testKDA >= targetKDA || killsAssistsNeeded >= 10) {
                     break;
                 }
                 killsAssistsNeeded++;
-                if (killsAssistsNeeded >= 10) break;
             }
 
             document.getElementById("killsAssistsNeeded").textContent = killsAssistsNeeded;
