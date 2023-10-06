@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KDA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KDA Calculator</h1>
+        <form id="kdaForm">
+            <label for="kills">Kills:</label>
+            <input type="number" id="kills" required><br><br>
+            
+            <label for="assists">Assists:</label>
+            <input type="number" id="assists" required><br><br>
+            
+            <label for="deaths">Deaths:</label>
+            <input type="number" id="deaths" required><br><br>
+            
+            <button type="button" onclick="calculateKDA()">Calculate</button><br><br>
+        </form>
+        
+        <p><strong>KDA:</strong> <span id="kdaResult">0</span></p>
+        <p><strong>Kills Needed for Higher KDA:</strong> <span id="killsNeeded">0</span></p>
+        <p><strong>Assists Needed for Higher KDA:</strong> <span id="assistsNeeded">0</span></p>
+    </div>
+
+    <script>
+        function calculateKDA() {
+            const kills = parseFloat(document.getElementById("kills").value);
+            const assists = parseFloat(document.getElementById("assists").value);
+            const deaths = parseFloat(document.getElementById("deaths").value);
+
+            if (isNaN(kills) || isNaN(assists) || isNaN(deaths)) {
+                alert("Please enter valid numbers for kills, assists, and deaths.");
+                return;
+            }
+
+            const kda = (kills + assists) / deaths;
+            const roundedKDA = kda.toFixed(2);
+
+            document.getElementById("kdaResult").textContent = roundedKDA;
+
+            const neededKills = (deaths * 2) - kills;
+            const neededAssists = (deaths * 2) - assists;
+
+            document.getElementById("killsNeeded").textContent = neededKills < 0 ? 0 : neededKills;
+            document.getElementById("assistsNeeded").textContent = neededAssists < 0 ? 0 : neededAssists;
+        }
+    </script>
+</body>
+</html>
