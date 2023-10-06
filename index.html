@@ -5,12 +5,40 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
         }
         .container {
             width: 300px;
             margin: 0 auto;
             text-align: center;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -19,20 +47,19 @@
         <h1>KDA Calculator</h1>
         <form id="kdaForm">
             <label for="kills">Kills:</label>
-            <input type="number" id="kills" required><br><br>
+            <input type="number" id="kills" required><br>
             
             <label for="assists">Assists:</label>
-            <input type="number" id="assists" required><br><br>
+            <input type="number" id="assists" required><br>
             
             <label for="deaths">Deaths:</label>
-            <input type="number" id="deaths" required><br><br>
+            <input type="number" id="deaths" required><br>
             
             <button type="button" onclick="calculateKDA()">Calculate</button><br><br>
         </form>
         
         <p><strong>KDA:</strong> <span id="kdaResult">0</span></p>
-        <p><strong>Kills Needed for Higher KDA:</strong> <span id="killsNeeded">0</span></p>
-        <p><strong>Assists Needed for Higher KDA:</strong> <span id="assistsNeeded">0</span></p>
+        <p><strong>Lowest Kills or Assists Needed to Increase KDA by 0.01:</strong> <span id="killsAssistsNeeded">0</span></p>
     </div>
 
     <script>
@@ -51,11 +78,20 @@
 
             document.getElementById("kdaResult").textContent = roundedKDA;
 
-            const neededKills = (deaths * 2) - kills;
-            const neededAssists = (deaths * 2) - assists;
+            // Calculate lowest kills or assists needed to increase KDA by 0.01
+            const targetKDA = parseFloat(roundedKDA) + 0.01;
+            let killsAssistsNeeded = 1;
 
-            document.getElementById("killsNeeded").textContent = neededKills < 0 ? 0 : neededKills;
-            document.getElementById("assistsNeeded").textContent = neededAssists < 0 ? 0 : neededAssists;
+            while (true) {
+                const testKDA = (kills + killsAssistsNeeded + assists) / deaths;
+                if (testKDA >= targetKDA) {
+                    break;
+                }
+                killsAssistsNeeded++;
+                if (killsAssistsNeeded >= 10) break;
+            }
+
+            document.getElementById("killsAssistsNeeded").textContent = killsAssistsNeeded;
         }
     </script>
 </body>
